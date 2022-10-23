@@ -5,3 +5,10 @@ export interface OrderStatusCreationAttrs {
 export interface IOrderStatus extends OrderStatusCreationAttrs {
   id: number;
 }
+
+export enum OrderStatusType {
+  NEW = "Неподтвержденный",
+  CONFIRM = "Подтвержденный",
+  CANCEL = "Отмененный",
+  DONE = "Завершенный",
+}

@@ -10,7 +10,7 @@ import { CarsService } from "entities/cars/cars.service";
 import { RatesService } from "entities/rates/rates.service";
 import { IQueryParams } from "common/types";
 import { IResponse } from "common/types";
-import { IOrderStatus } from "entities/orderStatuses/order-statuses.types";
+import { IOrderStatus, OrderStatusType } from "entities/orderStatuses/order-statuses.types";
 
 @Injectable()
 export class OrdersService {
@@ -72,9 +72,12 @@ export class OrdersService {
         }
       }
 
-      const responseOrderStatus = await this.orderStatusService.getOrderStatusById(1);
-      const orderStatus = responseOrderStatus.data as IOrderStatus;
-      dto.orderStatusId = orderStatus;
+      const responseOrderStatuses = await this.orderStatusService.getAllOrderStatuses();
+      const orderStatuses = responseOrderStatuses.data as IOrderStatus[];
+      const newOrderStatus = orderStatuses.filter(
+        (elem) => elem.name === OrderStatusType.NEW,
+      )[0];
+      dto.orderStatusId = newOrderStatus;
       const order = await this.orderRepository.create(dto);
       const response: IResponse = {
         count: 1,
